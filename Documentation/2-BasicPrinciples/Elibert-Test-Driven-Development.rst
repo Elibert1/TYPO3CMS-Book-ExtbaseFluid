@@ -120,7 +120,35 @@ of our domain model in our extension.
 Similarly we create the test class in the file
 Tests/Unit/Domain/Model/CustomerTest.php. Now we create a minimal test case with which we get used with PHPUnit.
 
-//code
+// 18: rest - as-parameter
+// To do: make all tests pass, leave the assert lines unchanged!
+
+describe('Rest parameters in functions', () => {
+  it('must be the last parameter', () => {
+    const fn = (...rest, veryLast) => {
+      assert.deepEqual(rest, [1, 2]);
+    };
+    fn(1, 2);
+  });
+  it('can be used to get all other parameters', () => {
+    const fn = (firstParam, secondParam, rest) => {
+      assert.deepEqual(rest, [3,4]);
+    };
+    fn(null, 2, 3, 4);
+  });
+  it('makes `arguments` obsolete', () => {
+    const fn = () => {
+      assert.deepEqual(args, [42, 'twenty three', 'win']);
+    };
+    fn(42, 'twenty three', 'win');
+  });
+  it('eliminate `arguments`!!!', () => {
+    const fn = () => args;
+    const [firstArg, ...rest] = fn(1, 2, 3);
+    assert.deepEqual(rest, [2, 3]);
+  });
+});
+
 
 All our test cases are named after the same name scheme like normal classes and
 they must be extended with \TYPO3\CMS\Core\Tests\BaseTestCase. One test class
